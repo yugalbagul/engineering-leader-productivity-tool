@@ -1,15 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
+import { Pool, PoolClient } from 'pg';
 
-// Get Supabase credentials from environment
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables');
-}
-
-// Create Supabase client
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Create PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || 'postgresql://engtool:engtool_password@localhost:5432/engtool_db',
+});
 
 // Database types
 export interface User {
@@ -56,3 +50,31 @@ export interface MeetingWithSummary extends Meeting {
   summary: MeetingSummary | null;
   notes: MeetingNote[];
 }
+
+// Query helper with automatic connection management
+export async function query<T = any>(text: string, params?: any[]): Promise<T[]> {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(text, params);
+    return result.rows as T[];
+  } finally {
+    client.release();
+  }
+}
+
+// Query helper for single result
+export async function queryOne<T = any>(text: string, params?: any[]): Promise<T | null> {
+  const rows = await query<T>(text, params);
+  return rows.length > 0 ? rows[0] : null;
+}
+
+// Insert helper
+export async function insert<T = any>(text: string, params?: any[]): Promise<T> {
+  const rows = await query<T>(text, params);
+  if (rows.length === 0) {
+    throw new Error('Insert failed - no rows returned');
+  }
+  return rows[0];
+}
+
+export default pool;
