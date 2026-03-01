@@ -20,7 +20,6 @@ export default function HomePage() {
   const searchMutation = trpc.search.naturalLanguage.useMutation({
     onSuccess: (data) => {
       console.log('Search results:', data);
-      // We'll display results in a modal or separate section
     },
   });
 
@@ -43,47 +42,64 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #f8fafc, #e2e8f0)' }}>
       {/* Header */}
-      <header className="border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+      <header style={{
+        borderBottom: '1px solid #e2e8f0',
+        background: 'rgba(255, 255, 255, 0.8)',
+        backdropFilter: 'blur(8px)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+      }}>
+        <div className="container" style={{ height: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a' }}>
             🚀 Engineering Leader Tool
           </h1>
           <button
             onClick={handleSync}
             disabled={syncMutation.isPending}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm font-medium"
+            style={{
+              padding: '0.5rem 1rem',
+              background: '#2563eb',
+              color: 'white',
+              borderRadius: '0.5rem',
+              border: 'none',
+              cursor: syncMutation.isPending ? 'not-allowed' : 'pointer',
+              opacity: syncMutation.isPending ? 0.5 : 1,
+              fontSize: '0.875rem',
+              fontWeight: 500,
+            }}
           >
             {syncMutation.isPending ? 'Syncing...' : 'Sync Calendar'}
           </button>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="container" style={{ padding: '2rem 0' }}>
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border">
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+        <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '1rem' }}>
+          <div style={{ background: 'white', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.875rem', color: '#475569', marginBottom: '0.25rem' }}>
               Total Meetings
             </div>
-            <div className="text-3xl font-bold text-slate-900 dark:text-white">
+            <div style={{ fontSize: '1.875rem', fontWeight: 700, color: '#0f172a' }}>
               {stats?.totalMeetings || 0}
             </div>
           </div>
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border">
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+          <div style={{ background: 'white', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.875rem', color: '#475569', marginBottom: '0.25rem' }}>
               Summarized
             </div>
-            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+            <div style={{ fontSize: '1.875rem', fontWeight: 700, color: '#2563eb' }}>
               {stats?.summarizedMeetings || 0}
             </div>
           </div>
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border">
-            <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+          <div style={{ background: 'white', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.875rem', color: '#475569', marginBottom: '0.25rem' }}>
               Coverage
             </div>
-            <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+            <div style={{ fontSize: '1.875rem', fontWeight: 700, color: '#16a34a' }}>
               {stats?.totalMeetings
                 ? Math.round((stats.summarizedMeetings / stats.totalMeetings) * 100)
                 : 0}%
@@ -92,40 +108,56 @@ export default function HomePage() {
         </div>
 
         {/* Search */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border mb-8">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+        <div style={{ background: 'white', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', border: '1px solid #e2e8f0', marginBottom: '2rem' }}>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: '#0f172a', marginBottom: '1rem' }}>
             🔍 Search Your Meetings
           </h2>
-          <div className="flex gap-2">
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               placeholder="What did I decide about X? Show me action items from meeting with Vivek..."
-              className="flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+              style={{
+                flex: 1,
+                padding: '0.75rem 1rem',
+                border: '1px solid #e2e8f0',
+                borderRadius: '0.5rem',
+                fontSize: '1rem',
+              }}
             />
             <button
               onClick={handleSearch}
               disabled={searchMutation.isPending || !searchQuery.trim()}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
+              style={{
+                padding: '0.75rem 1.5rem',
+                background: '#2563eb',
+                color: 'white',
+                borderRadius: '0.5rem',
+                border: 'none',
+                cursor: (searchMutation.isPending || !searchQuery.trim()) ? 'not-allowed' : 'pointer',
+                opacity: (searchMutation.isPending || !searchQuery.trim()) ? 0.5 : 1,
+                fontSize: '1rem',
+                fontWeight: 500,
+              }}
             >
               {searchMutation.isPending ? 'Searching...' : 'Search'}
             </button>
           </div>
 
           {showResults && searchMutation.data && (
-            <div className="mt-6 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-              <h3 className="font-medium text-slate-900 dark:text-white mb-2">Answer:</h3>
-              <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+            <div style={{ marginTop: '1.5rem', padding: '1rem', background: '#f8fafc', borderRadius: '0.5rem' }}>
+              <h3 style={{ fontWeight: 500, color: '#0f172a', marginBottom: '0.5rem' }}>Answer:</h3>
+              <p style={{ color: '#334155', whiteSpace: 'pre-wrap' }}>
                 {searchMutation.data.answer}
               </p>
               {searchMutation.data.sources && searchMutation.data.sources.length > 0 && (
-                <div className="mt-4">
-                  <h4 className="font-medium text-slate-900 dark:text-white mb-2">Sources:</h4>
-                  <ul className="space-y-2">
+                <div style={{ marginTop: '1rem' }}>
+                  <h4 style={{ fontWeight: 500, color: '#0f172a', marginBottom: '0.5rem' }}>Sources:</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                     {searchMutation.data.sources.map((source: any) => (
-                      <li key={source.id} className="text-sm text-slate-600 dark:text-slate-400">
+                      <li key={source.id} style={{ fontSize: '0.875rem', color: '#475569', marginBottom: '0.25rem' }}>
                         {source.title} - {new Date(source.meeting_date).toLocaleDateString()}
                       </li>
                     ))}
@@ -137,80 +169,87 @@ export default function HomePage() {
         </div>
 
         {/* Meetings List */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border">
-          <div className="px-6 py-4 border-b dark:border-slate-700">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+        <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', border: '1px solid #e2e8f0' }}>
+          <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #e2e8f0' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: '#0f172a' }}>
               📅 Recent Meetings
             </h2>
           </div>
 
           {isLoading ? (
-            <div className="p-6 text-center text-slate-600 dark:text-slate-400">
+            <div style={{ padding: '3rem', textAlign: 'center', color: '#475569' }}>
               Loading meetings...
             </div>
           ) : !meetings || meetings.length === 0 ? (
-            <div className="p-12 text-center">
-              <p className="text-slate-600 dark:text-slate-400 mb-4">
+            <div style={{ padding: '3rem', textAlign: 'center' }}>
+              <p style={{ color: '#475569', marginBottom: '1rem' }}>
                 No meetings yet. Sync your calendar to get started.
               </p>
               <button
                 onClick={handleSync}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: '#2563eb',
+                  color: 'white',
+                  borderRadius: '0.5rem',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                }}
               >
                 Sync Calendar Now
               </button>
             </div>
           ) : (
-            <div className="divide-y dark:divide-slate-700">
-              {meetings.map((meeting: any) => (
-                <div key={meeting.id} className="p-6 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-medium text-slate-900 dark:text-white">
-                      {meeting.title}
-                    </h3>
-                    <span className="text-sm text-slate-600 dark:text-slate-400">
-                      {new Date(meeting.meeting_date).toLocaleDateString()}
-                    </span>
-                  </div>
-
-                  {meeting.description && (
-                    <p className="text-slate-600 dark:text-slate-400 text-sm mb-3 line-clamp-2">
-                      {meeting.description}
-                    </p>
-                  )}
-
-                  {meeting.meeting_summaries && meeting.meeting_summaries.length > 0 ? (
-                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-                      <h4 className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">
-                        AI Summary
-                      </h4>
-                      <p className="text-sm text-blue-800 dark:text-blue-200 line-clamp-3">
-                        {meeting.meeting_summaries[0].summary}
-                      </p>
-                      {meeting.meeting_summaries[0].action_items && meeting.meeting_summaries[0].action_items.length > 0 && (
-                        <div className="mt-3">
-                          <h5 className="text-xs font-medium text-blue-900 dark:text-blue-300 mb-1">
-                            Action Items:
-                          </h5>
-                          <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
-                            {meeting.meeting_summaries[0].action_items.slice(0, 3).map((item: any, idx: number) => (
-                              <li key={idx} className="flex items-start gap-2">
-                                <span className="text-blue-500">•</span>
-                                <span>{item.text}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="text-sm text-slate-500 dark:text-slate-500 italic">
-                      No summary yet
-                    </div>
-                  )}
+            meetings.map((meeting: any) => (
+              <div key={meeting.id} style={{ padding: '1.5rem', borderBottom: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1.125rem', fontWeight: 500, color: '#0f172a' }}>
+                    {meeting.title}
+                  </h3>
+                  <span style={{ fontSize: '0.875rem', color: '#475569' }}>
+                    {new Date(meeting.meeting_date).toLocaleDateString()}
+                  </span>
                 </div>
-              ))}
-            </div>
+
+                {meeting.description && (
+                  <p style={{ color: '#475569', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
+                    {meeting.description}
+                  </p>
+                )}
+
+                {meeting.meeting_summaries && meeting.meeting_summaries.length > 0 ? (
+                  <div style={{ background: '#eff6ff', borderRadius: '0.5rem', padding: '1rem', marginTop: '0.5rem' }}>
+                    <h4 style={{ fontSize: '0.875rem', fontWeight: 500, color: '#1d4ed8', marginBottom: '0.5rem' }}>
+                      AI Summary
+                    </h4>
+                    <p style={{ fontSize: '0.875rem', color: '#1e40af', marginBottom: '0.5rem' }}>
+                      {meeting.meeting_summaries[0].summary}
+                    </p>
+                    {meeting.meeting_summaries[0].action_items && meeting.meeting_summaries[0].action_items.length > 0 && (
+                      <div>
+                        <h5 style={{ fontSize: '0.75rem', fontWeight: 500, color: '#1d4ed8', marginBottom: '0.25rem' }}>
+                          Action Items:
+                        </h5>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.75rem', color: '#1e40af' }}>
+                          {meeting.meeting_summaries[0].action_items.slice(0, 3).map((item: any, idx: number) => (
+                            <li key={idx} style={{ marginBottom: '0.25rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                              <span>•</span>
+                              <span>{item.text}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div style={{ fontSize: '0.875rem', color: '#94a3b8', fontStyle: 'italic' }}>
+                    No summary yet
+                  </div>
+                )}
+              </div>
+            ))
           )}
         </div>
       </main>
