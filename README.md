@@ -1,164 +1,225 @@
-# Engineering Leader Productivity Tool - Research & Design
+# Engineering Leader Tool
 
-> A comprehensive productivity tool tailored for Engineering Leaders
+A personal productivity tool for engineering leaders. Centralizes meeting notes, provides AI-powered summaries, and enables natural language search across all your meeting context.
 
-## 📋 Overview
+## 🚀 Features
 
-This repository contains research, design, and planning documents for building a productivity tool specifically designed for Engineering Leaders. The tool aims to be a centralized hub for knowledge, projects, and context.
+- **Calendar Integration**: Sync meetings from Google Calendar
+- **AI Summaries**: Automatic meeting summarization with action items and decisions
+- **Natural Language Search**: Ask questions about your meetings in plain English
+- **Semantic Search**: Vector-based search to find relevant meeting context
+- **Meeting Notes Integration**: Pull notes from Google Drive
 
-## 🎯 Vision
+## 📋 Tech Stack
 
-Create a unified platform that integrates:
-- **Meeting Knowledge Base** - AI-powered meeting summaries and context retrieval
-- **Project Management Hub** - Tasks, dependencies, timelines, and health metrics
-- **GitHub Integration** - Track commits, PRs, and what's been shipped
-- **Notion Artifacts** - Link documentation to projects, tasks, and meetings
-- **LLM-Powered Chat** - Natural language queries across all data
+- **Frontend**: Next.js 16 + React 19 + TypeScript
+- **Backend**: tRPC + Next.js API Routes
+- **Database**: PostgreSQL + pgvector (hosted on Supabase)
+- **LLM**: OpenAI GPT-4o (via ZAI API)
+- **Integrations**: gog CLI for Google Workspace
+- **Styling**: Tailwind CSS
 
-## 📁 Repository Structure
+## 🛠️ Setup Instructions
 
-```
-research-artifacts/
-├── README.md                              # This file
-├── Initial_plan.md                        # Original research document with FRs, architecture, data model
-└── Engineering_Management_Fundamentals.md     # Top 5 pillars of successful engineering management
-```
+### 1. Clone the Repository
 
-## 📚 Documentation
-
-### Initial Plan
-**File:** `Initial_plan.md`
-
-Contains:
-- Context analysis from Engineering Leader calendar
-- 7 Functional Requirements (FR-1 to FR-7)
-- Non-functional requirements (performance, security, scalability)
-- System architecture (frontend, API, services, integrations, data layer, LLM)
-- Complete data model (SQL schemas for all entities)
-- MVP roadmap (10 weeks / 5 sprints)
-- Success metrics and KPIs
-- Competitive analysis
-- Risks and open questions
-
-### Engineering Management Fundamentals
-**File:** `Engineering_Management_Fundamentals.md`
-
-Deep dive into the **5 Pillars of Successful Engineering Management**:
-
-1. **People Management & Leadership**
-   - Effective 1:1s, hiring, performance management, culture
-   - Metrics: 1:1 attendance, satisfaction, promotion rate, attrition
-   - Anti-patterns to avoid
-
-2. **Technical Strategy & Architecture**
-   - Technical vision, ADRs, tech debt management, Developer Experience (DX)
-   - Metrics: Build time, test time, deployment frequency, tech debt ratio
-   - Anti-patterns to avoid
-
-3. **Project Delivery & Execution**
-   - Planning, estimation, sprint management, risk management, stakeholder management
-   - Metrics: Sprint completion, on-time delivery, blocked time, rework rate
-   - Anti-patterns to avoid
-
-4. **Processes & Systems**
-   - Agile processes (Scrum vs. Kanban), code review, incident management, releases
-   - Metrics: Incident frequency, MTTR, MTTD, code review turnaround
-   - Anti-patterns to avoid
-
-5. **Communication & Stakeholder Management**
-   - Documentation hierarchy, meeting management, presentations, executive communication
-   - Metrics: Meeting attendance, documentation coverage, stakeholder satisfaction
-   - Anti-patterns to avoid
-
-Also includes:
-- Templates (ADRs, Post-mortems, Risk Registers, Executive Summaries)
-- Self-assessment scoring (25 questions across all pillars)
-- Recommended reading (books and blogs)
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Read the documents in order:
-  1. Start with `Initial_plan.md` for the tool's requirements and architecture
-  2. Read `Engineering_Management_Fundamentals.md` to understand the domain
-
-### For Developers
-If you want to start building:
-1. Review the data model in `Initial_plan.md` (Phase 4)
-2. Check the technology stack recommendations (Phase 3.2)
-3. Follow the MVP roadmap (Phase 5) - start with Sprint 1
-
-### For Engineering Leaders
-If you want to understand the tool's value:
-1. Read the pain points in `Initial_plan.md` (Section 1.2)
-2. Review the sample user journey (Appendix A)
-3. Understand how the tool amplifies all 5 pillars of engineering management
-
-## 📊 Key Insights
-
-### The Problem
-Engineering Leaders face:
-- Fragmented information across tools
-- Context switching overhead
-- Lost decisions and action items
-- No unified view of what's shipped
-- Meeting prep takes 15-20 minutes
-
-### The Solution
-A centralized platform that:
-- Saves 40% time in meeting prep (20 min → 3 min)
-- Reduces missed action items by 80%
-- Improves project delivery predictability by 20%
-- Provides natural language access to all knowledge
-
-### Integration Across Pillars
-The Meeting Knowledge Base isn't just for meetings - it's a **force multiplier** across all 5 pillars of engineering management:
-
-```
-People ←┐
-         │
-Technical ←┤
-         ├─→ Meeting Knowledge Base
-Delivery ←┤  (Force Multiplier)
-         │
-Processes ←┤
-         │
-Communication ←┘
+```bash
+git clone git@github.com:yugalbagul/engineering-leader-productivity-tool.git
+cd engineering-leader-productivity-tool/app
 ```
 
-## 📈 Next Steps
+### 2. Install Dependencies
 
-### Immediate
-- [ ] Validate requirements with 5-10 Engineering Leaders
-- [ ] Build technical proof of concept (meeting ingestion + AI summarization)
-- [ ] Prioritize features based on user feedback
+```bash
+npm install
+```
 
-### Short-term (1-3 months)
-- [ ] Complete Sprint 1 & 2 (Foundation + Meeting Intelligence)
-- [ ] Launch MVP to beta users
-- [ ] Collect and iterate based on feedback
+### 3. Set Up Supabase
 
-### Long-term (6-12 months)
-- [ ] Complete all 5 sprints and go to market
-- [ ] Achieve success metrics (DAU >60%, WAU >80%)
-- [ ] Expand integrations (Jira, Linear, Slack, Teams)
+1. Go to [supabase.com](https://supabase.com) and create a new project
+2. Enable the `pgvector` extension:
+   - Go to Database → Extensions
+   - Search for "vector" and enable `pgvector`
 
-## 🤝 Contributing
+3. Run the database schema:
+   - Open the SQL Editor in Supabase
+   - Copy contents from `../docs/database-schema.sql`
+   - Run the SQL
 
-This is research material. Contributions welcome in the form of:
-- Feedback on the design
-- Additional requirements based on real-world experience
-- Suggestions for the technology stack
-- Case studies and user stories
+4. Run the vector search function:
+   - Copy contents from `../docs/supabase-migrations/01_vector_search.sql`
+   - Run the SQL
+
+5. Get your Supabase credentials:
+   - Project URL: Settings → API → Project URL
+   - Anon Key: Settings → API → anon/public key
+   - Service Role Key: Settings → API → service_role key
+
+### 4. Environment Variables
+
+Create a `.env.local` file in the `app` directory:
+
+```bash
+# Copy from .env.example
+cp .env.example .env.local
+```
+
+Edit `.env.local` with your credentials:
+
+```bash
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# ZAI API Key (for LLM)
+ZAI_API_KEY=your_zai_api_key
+
+# Google Calendar (via gog CLI)
+GOOGLE_CALENDAR_ENABLED=true
+
+# Node Environment
+NODE_ENV=development
+```
+
+### 5. Configure gog CLI
+
+The gog CLI should already be configured for `yugal@joinfleek.com`. Verify:
+
+```bash
+gog account list
+gog calendar events --days 1
+```
+
+### 6. Run the Development Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📝 Usage
+
+### Sync Calendar
+
+1. Click "Sync Calendar" button on the home page
+2. This pulls the last 7 days of meetings from Google Calendar
+3. Meetings are stored in Supabase
+
+### Generate Summaries
+
+For each meeting, you can:
+
+1. Click on a meeting to view details
+2. Click "Generate Summary" to:
+   - Fetch notes from Google Drive (if available)
+   - Generate AI summary with action items and decisions
+   - Create vector embeddings for search
+
+### Search
+
+Use natural language queries like:
+
+- "What did I decide about the AI Bundle feature?"
+- "Show me all action items from meetings with Vivek"
+- "Summarize meetings about hiring"
+
+## 🗄️ Database Schema
+
+### Core Tables
+
+- **users**: User accounts (MVP has single user)
+- **meetings**: Calendar events/meetings
+- **meeting_notes**: Raw content from Google Docs/transcripts
+- **meeting_summaries**: AI-generated summaries
+- **meeting_search_index**: Vector embeddings for semantic search
+
+### Key Functions
+
+- `match_meetings()`: Vector similarity search for meetings
+
+## 🔄 Development
+
+### Project Structure
+
+```
+app/
+├── src/
+│   ├── app/              # Next.js app router
+│   │   ├── api/trpc/     # tRPC API routes
+│   │   └── page.tsx      # Home page
+│   ├── components/       # React components
+│   ├── lib/              # Utilities (tRPC client)
+│   └── server/           # Backend code
+│       ├── db/           # Database client
+│       ├── integrations/ # Google Calendar/Drive
+│       ├── llm/          # LLM services
+│       ├── router/       # tRPC router
+│       └── trpc/         # tRPC configuration
+├── public/               # Static assets
+└── package.json
+```
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## 🧪 Testing
+
+### Test Calendar Sync
+
+```bash
+# Sync last 7 days of meetings
+curl -X POST http://localhost:3000/api/trpc/ingestion.syncCalendar \
+  -H "Content-Type: application/json" \
+  -d '{"input":{"daysBack":7}}'
+```
+
+### Test Search
+
+```bash
+# Natural language search
+curl -X POST http://localhost:3000/api/trpc/search.naturalLanguage \
+  -H "Content-Type: application/json" \
+  -d '{"input":{"query":"What did I decide about hiring?"}}'
+```
+
+## 🐛 Troubleshooting
+
+### Supabase Connection Issues
+
+- Verify environment variables are set correctly
+- Check Supabase project is active
+- Ensure pgvector extension is enabled
+
+### gog CLI Issues
+
+- Verify gog is installed and configured
+- Check account has correct permissions
+- Test with `gog calendar events --days 1`
+
+### LLM Errors
+
+- Verify ZAI_API_KEY is set
+- Check API key has sufficient credits
+- Ensure ZAI endpoint is accessible
 
 ## 📄 License
 
-This research is provided as-is for educational and planning purposes.
+This project is open source. Feel free to use, modify, and distribute.
 
-## 📞 Contact
+## 🤝 Contributing
 
-For questions or collaboration opportunities, please reach out via GitHub issues.
+This is a personal tool, but contributions are welcome!
+
+## 📧 Contact
+
+For questions or feedback, reach out to Yugal.
 
 ---
 
-*Last Updated: February 18, 2026*
+**Built with ❤️ for Engineering Leaders**
