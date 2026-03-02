@@ -29,6 +29,10 @@ export default function HomePage() {
       alert(`Synced ${data.synced} meetings`);
       window.location.reload();
     },
+    onError: (error) => {
+      console.error('Sync error:', error);
+      alert('Failed to sync calendar. Check console for details.');
+    },
   });
 
   const handleSearch = () => {
@@ -38,8 +42,24 @@ export default function HomePage() {
   };
 
   const handleSync = () => {
+    console.log('Syncing calendar...');
     syncMutation.mutate({ daysBack: 7 });
   };
+
+  if (isLoading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '1.25rem',
+        color: '#475569',
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #f8fafc, #e2e8f0)' }}>
@@ -52,8 +72,8 @@ export default function HomePage() {
         top: 0,
         zIndex: 10,
       }}>
-        <div className="container" style={{ height: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a' }}>
+        <div style={{ height: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', maxWidth: '1280px', margin: '0 auto', padding: '0 1rem' }}>
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a', margin: 0 }}>
             🚀 Engineering Leader Tool
           </h1>
           <button
@@ -76,9 +96,9 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="container" style={{ padding: '2rem 0' }}>
+      <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '2rem 0' }}>
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '1rem' }}>
+        <div style={{ marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '1rem' }}>
           <div style={{ background: 'white', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', border: '1px solid #e2e8f0' }}>
             <div style={{ fontSize: '0.875rem', color: '#475569', marginBottom: '0.25rem' }}>
               Total Meetings
@@ -171,16 +191,12 @@ export default function HomePage() {
         {/* Meetings List */}
         <div style={{ background: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', border: '1px solid #e2e8f0' }}>
           <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #e2e8f0' }}>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: '#0f172a' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: '#0f172a', margin: 0 }}>
               📅 Recent Meetings
             </h2>
           </div>
 
-          {isLoading ? (
-            <div style={{ padding: '3rem', textAlign: 'center', color: '#475569' }}>
-              Loading meetings...
-            </div>
-          ) : !meetings || meetings.length === 0 ? (
+          {!meetings || meetings.length === 0 ? (
             <div style={{ padding: '3rem', textAlign: 'center' }}>
               <p style={{ color: '#475569', marginBottom: '1rem' }}>
                 No meetings yet. Sync your calendar to get started.
@@ -205,7 +221,7 @@ export default function HomePage() {
             meetings.map((meeting: any) => (
               <div key={meeting.id} style={{ padding: '1.5rem', borderBottom: '1px solid #e2e8f0' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1.125rem', fontWeight: 500, color: '#0f172a' }}>
+                  <h3 style={{ fontSize: '1.125rem', fontWeight: 500, color: '#0f172a', margin: 0 }}>
                     {meeting.title}
                   </h3>
                   <span style={{ fontSize: '0.875rem', color: '#475569' }}>
